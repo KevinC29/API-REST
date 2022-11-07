@@ -1,82 +1,136 @@
 // const DB = require("./db.json");
 // const { saveToDatabase } = require("./utils");
 //const pool = require("./db");
+import { pool } from "../database/db.js";
 
-export const obtenerMDocentes = (todosDocentes) => {
+async function validar(id_docente) {
+  const [rows] = await pool.query("SELECT * FROM docente WHERE id_docente = ?", [id_docente]);
+  const validar = rows.length == 1;
+  if (!validar) {
+    throw {
+      status: 400,
+      message: `Can't find workout with the id '${id_docente}' Error al Eliminar - Docente no encontrado`,
+    };
+  }
+
+  return validar;
+}
+
+
+export const obtenerMDocentes = async () => {
   try {
-    if (todosDocentes.lenght == 0) {
+
+    //console.log("ESTOY EN BD OBTENER DOCENTES");
+    const [rows] = await pool.query("SELECT * FROM docente");
+    //console.log(rows);
+
+
+    if (rows.lenght <= 0) {
       return console.log("No existen Docentes Registrados");
-    }
-    let docentes = todosDocentes;
-    return docentes; //jQuery.parseJSON(rows);
+    };
+
+    // if (todosDocentes.lenght == 0) {
+    //   return console.log("No existen Docentes Registrados");
+    // }
+    // let docentes = todosDocentes;
+    return rows; //jQuery.parseJSON(rows);
   } catch (error) {
     throw { status: 500, message: error };
   }
 };
 
-export const obtenerMDocente = (datos_docente, id) => {
+
+export const obtenerMDocente = async (id_docente) => {
   try {
 
     //const validar = datos_docente.find((datos_docente) => datos_docente.id_docente === id);
-    const validar = datos_docente[0].id_docente === id;
+    const [rows] = await pool.query("SELECT * FROM docente WHERE id_docente = ?", [id_docente]);
+    //console.log("El docente es", rows);
+
+    //console.log(typeof validar, validar);
     //console.log("validacioooooooooon", validar);
 
-    if (!validar) {
+    if (rows.length == 0) {
       throw {
         status: 400,
         message: `Can't find workout with the id '${id_docente}'`,
       };
     }
 
-    return datos_docente;
+    return rows;
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
   }
 
 };
 
-export const crearMDocente = (nuevoDocente, docentes) => {
+export const crearMDocente = async (nuevoDocente) => {
   try {
-    ///ARREGLAR LA CREACION DE USUARIOS
-    
-    const isAlreadyAdded = docentes.findIndex((docente) => docente.cedula === nuevoDocente) > -1;
-    console.log(typeof isAlreadyAdded);
 
-    if (isAlreadyAdded) {
-       throw {
-        
+    const [rows] = await pool.query("SELECT * FROM docente WHERE cedula = ?", [nuevoDocente.cedula]);
+
+    if (rows.length > 0) {
+      throw {
         status: 400,
-        message: `Workout with the name '${nuevoDocente.name}' already exists`,
+        message: `Workout with the name '${nuevoDocente.cedula}' El docente ya existe`,
       };
-      return isAlreadyAdded;
     }
 
-    return nuevoDocente;
+    await pool.query("INSERT INTO docente (id_docente, nombres, apellidos, direccion, sexo, cedula, telefono, email, fecha_creacion, fecha_modificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [nuevoDocente.id_docente, nuevoDocente.nombres, nuevoDocente.apellidos, nuevoDocente.direccion, nuevoDocente.sexo, nuevoDocente.cedula, nuevoDocente.telefono, nuevoDocente.email, nuevoDocente.fecha_creacion, nuevoDocente.fecha_modificacion]
+    );
+
+    return [nuevoDocente];
   } catch (error) {
     throw { status: 500, message: error?.message || error };
   }
 };
 
-export const modificarMDocente = (docente, changes) => {
+export const modificarMDocente = async (id_docente, cambios) => {
+
+  const { nombres, apellidos, direccion, sexo, cedula, telefono, email } = cambios;
+  const fecha_modificacion = new Date();
+
+
+  try {
+    // const { id } = req.params;
+    // const { name, salary } = req.body;
+    if (validar(id_docente)) {
+      const [result] = await pool.query(
+        "UPDATE docente SET nombres = IFNULL(?, nombres), apellidos = IFNULL(?, apellidos), direccion = IFNULL(?, direccion), sexo = IFNULL(?, sexo), cedula = IFNULL(?, cedula), telefono = IFNULL(?, telefono), email = IFNULL(?, email), fecha_modificacion = IFNULL(?, fecha_modificacion) WHERE id_docente = ?",
+        [nombres, apellidos, direccion, sexo, cedula, telefono, email, fecha_modificacion, id_docente]
+      );
+
+      if (result.affectedRows === 0) {
+        throw {
+          status: 404,
+          message: `Docente not found-Fallo la modificacion`,
+        };
+      }
+    }
+
+    const [rows] = await pool.query("SELECT * FROM docente WHERE id_docente = ?", [
+      id_docente,
+    ]);
+    return rows;
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
+  };
 
 };
 
-export const eliminarMDocente = (docente) => {
+
+export const eliminarMDocente = async (id_docente) => {
 
   try {
-    const validar = docente.insertId == 0 ? true : false;
 
-    if (!validar) {
-      res.status(400).send({
-        status: "FAILED",
-        data: { error: "Existio un error al eliminar" },
-      });
-      return;
-    } else {
-      return console.log("Docente eliminado correctamente");
+    if (validar(id_docente)) {
+      await pool.query("DELETE FROM docente WHERE id_docente = ?", [id_docente]);
     }
 
   } catch (error) {
     throw { status: error?.status || 500, message: error?.message || error };
   }
 };
+
+

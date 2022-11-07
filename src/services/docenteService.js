@@ -5,28 +5,28 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 
-export const obtenerSDocentes = (todosDocentes) => {
+export const obtenerSDocentes = () => {
   try {
-    const todoslosDocentes = obtenerMDocentes(todosDocentes);
+    const todoslosDocentes = obtenerMDocentes();
     return todoslosDocentes;
   } catch (error) {
     throw error;
   }
 };
 
-export const obtenerSDocente = (datos_docente, id_docente) => {
+export const obtenerSDocente = (id_docente) => {
   try {
-    const docente = obtenerMDocente(datos_docente, id_docente);
+    const docente = obtenerMDocente(id_docente);
     return docente;
   } catch (error) {
     throw error;
   }
 };
 
-export const crearSDocente = (nuevoDocente, docentes) => {
+export const crearSDocente = (nuevoDocente) => {
 
   try {
-    const crearDocente = crearMDocente(nuevoDocente, docentes);
+    const crearDocente = crearMDocente(nuevoDocente);
     return crearDocente;
   } catch (error) {
     throw error;
@@ -34,11 +34,18 @@ export const crearSDocente = (nuevoDocente, docentes) => {
 };
 
 export const modificarSDocente = (id_docente, cambios) => {
+  try {
+    const modificarDocente = modificarMDocente(id_docente, cambios);
+    return modificarDocente;
+  } catch (error) {
+    throw error;
+  }
+
 };
 
-export const eliminarSDocente = (docente) => {
+export const eliminarSDocente = (id_docente) => {
   try {
-    eliminarMDocente(docente);
+    eliminarMDocente(id_docente);
   } catch (error) {
     throw error;
   }

@@ -13,10 +13,14 @@ import { Docente } from "../Entidades/Docente.js"
 
 export const obtenerCDocentes = async (req, res) => {
     //const { id_docente } = req.query;
-    const [rows] = await pool.query("SELECT * FROM docente");
+
+
+
+    //const [rows] = pool.query("SELECT * FROM docente");
     try {
-        
-        const todosDocentes = obtenerSDocentes(rows);
+        //console.log("ESTOY EN OBTENER DOCENTES")
+        const todosDocentes = await obtenerSDocentes();
+        //console.log("todos los docente", todosDocentes);
         res.status(200).json({ message: 'ok', data: todosDocentes });
         //console.log(rows[0]);
         //res.status(200).json({ message: 'ok' , data: rows});
@@ -52,11 +56,7 @@ export const obtenerCDocente = async (req, res) => {
         });
         return;
     }
-    const id1 = id_docente.slice(1, 36);
-    const [rows] = await pool.query("SELECT * FROM docente WHERE id_docente = ?", [
-        id1,
-    ]);
-
+    const id1 = id_docente.slice(1, 37);
     try {
         // if (rows.length <= 0) {
         //     res.status(400).send({
@@ -65,8 +65,7 @@ export const obtenerCDocente = async (req, res) => {
         //       });
         //       return;
         // }
-
-        const docente = obtenerSDocente(rows, id1);
+        const docente = await obtenerSDocente(id1);
         res.status(200).json({ message: 'ok', data: docente });
         //res.json(rows[0]);
     } catch (error) {
@@ -76,7 +75,6 @@ export const obtenerCDocente = async (req, res) => {
 
 export const crearCDocente = async (req, res) => {
     const { body } = req;
-    console.log(body);
 
     if (
         !body.nombres||
@@ -110,17 +108,11 @@ export const crearCDocente = async (req, res) => {
         fecha_modificacion: new Date()
       };
 
-      //ARREGLAR LA LOGICA
-    const [rows] = await pool.query("INSERT INTO docente (id_docente, nombres, apellidos, direccion, sexo, cedula, telefono, email, fecha_creacion, fecha_modificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [nuevoDocente.id_docente, nuevoDocente.nombres, nuevoDocente.apellidos, nuevoDocente.direccion, nuevoDocente.sexo, nuevoDocente.cedula, nuevoDocente.telefono, nuevoDocente.email, nuevoDocente.fecha_creacion, nuevoDocente.fecha_modificacion]
-        );
-
-    const [rows2] = await pool.query("SELECT * FROM docente");
-
     try {
-        //const {  } = req.body;
-        const crearDocente = crearSDocente(nuevoDocente.cedula, rows2);
-        res.status(201).send({ status: "OK", data: crearDocente });
+        const crearDocente = await crearSDocente(nuevoDocente);
+        console.log(crearCDocente);
+        //res.status(201).send({ status: "OK", data: crearDocente });
+        res.status(201).json({ status: "OK", data: crearDocente });
     } catch (error) {
         res.status(error?.status || 500) .send({ status: "FAILDED", data: { error: error?.message || error } });
     }
@@ -129,7 +121,26 @@ export const crearCDocente = async (req, res) => {
 };
 
 export const modificarCDocente = async (req, res) => {
-
+    const {
+        body,
+        params: { id_docente },
+      } = req;
+    
+      if (!id_docente) {
+        res.status(400).send({
+          status: "FAILED",
+          data: { error: "Parameter ':id_docente' no se encontro el docente" },
+        });
+      }
+      
+      const id1 = id_docente.slice(1, 37);
+      try {
+        const modificarDocente = await modificarSDocente(id1, body);
+        //res.send({ status: "OK", data: modificarDocente });
+        res.json({ status: "OK", data: modificarDocente });
+      } catch (error) {
+        res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
+      }
 
 };
 
@@ -151,12 +162,10 @@ export const eliminarCDocente = async (req, res) => {
     //   return res.status(404).json({ message: "Docente not found" });
     // }
 
-    const id = id_docente.slice(1, 36);
-    console.log(id);
-    const [rows] = await pool.query("DELETE FROM docente WHERE id_docente = ?", [id]);
+    const id = id_docente.slice(1, 37);
     
     try {
-        eliminarSDocente(rows);
+        await eliminarSDocente(id);
         res.status(204).send({ status: "OK" });
 
     } catch (error) {
