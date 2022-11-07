@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import{obtenerCDocentes, obtenerCDocente, crearCDocente, modificarCDocente, eliminarCDocente } from "../controllers/docenteController.js";
-//const docenteController = require("../controllers/docenteController");
 //const estudianteController = require("../controllers/estudianteController");
-const router = Router();
+export const router = Router();
 
 
 router.get("/docentes", obtenerCDocentes);
-router.get("/docentes/:docenteId", obtenerCDocente);
+router.get("/docentes/:id_docente", obtenerCDocente);
 router.post("/docentes", crearCDocente);
-router.patch("/docentes/:docenteId", modificarCDocente);
-router.delete("/docentes/:docenteId", eliminarCDocente);
+router.patch("/docentes/:id_docente", modificarCDocente);
+router.delete("/docentes/:id_docente", eliminarCDocente);
 //   .get("/", estudianteController.obtenerDocentes)
 //   .get("/:estudianteId", estudianteController.obtenerDocente)
 //   .post("/", estudianteController.crearDocente)

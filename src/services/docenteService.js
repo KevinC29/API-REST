@@ -1,31 +1,46 @@
 //import {pool} from '../db/db.js'
 //const docente = require("../database/Docente");
-import{ obtenerMDocentes }  from '../database/docente.js';
-  // obtenerMDocente,
-  // crearMDocente,
-  // modificarMDocente,
-  // eliminarMDocente,
+import { obtenerMDocentes, obtenerMDocente, crearMDocente, modificarMDocente, eliminarMDocente } from '../database/DocenteBD.js';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
 export const obtenerSDocentes = (todosDocentes) => {
   try {
-      const todosDocentes = obtenerMDocentes(todosDocentes);
-      return todosDocentes;
-    } catch (error) {
-      throw error;
-    }
+    const todoslosDocentes = obtenerMDocentes(todosDocentes);
+    return todoslosDocentes;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const obtenerSDocente = (docenteId) => {
+export const obtenerSDocente = (datos_docente, id_docente) => {
+  try {
+    const docente = obtenerMDocente(datos_docente, id_docente);
+    return docente;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const crearSDocente = (nuevoDocente) => {
+export const crearSDocente = (nuevoDocente, docentes) => {
+
+  try {
+    const crearDocente = crearMDocente(nuevoDocente, docentes);
+    return crearDocente;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const modificarSDocente = (docenteId, cambios) => {
+export const modificarSDocente = (id_docente, cambios) => {
 };
 
-export const eliminarSDocente = (docenteId) => {
+export const eliminarSDocente = (docente) => {
+  try {
+    eliminarMDocente(docente);
+  } catch (error) {
+    throw error;
+  }
 };
 

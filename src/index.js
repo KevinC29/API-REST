@@ -1,10 +1,9 @@
 import express from "express";
 //const v1docenteRoutes = require("./routes/docenteRoutes");
 import { pool } from "./database/db.js";
-import { indexRoutes } from "./routes/docenteRoutes.js";
-
+import { router } from "./routes/docenteRoutes.js";
+import { PORT } from "./database/config.js";
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 
 
@@ -24,21 +23,15 @@ const PORT = process.env.PORT || 3000;
 //     const data = await getData();
 //     console.log("ESTOY EN EL" + data);
 // }
+// app.get('/ping', async (req, res) => {
+//   const [result] = await pool.query('SELECT "Hola mundo" as RESULT');
+//   console.log(result[0]);
+//   res.json(result[0]);
 
- app.get('/ping', async (req, res) => {
-     const [result]= await pool.query('SELECT "Hola mundo" as RESULT');
-     console.log(result[0]);
-     res.json(result[0]);
-  
- });
-
-
-//app.use("/api/v1", indexRoutes);
-
-
-
-
-
+// });
 app.use(express.json());
+
+app.use("/api/v1", router);
+
 app.listen(PORT);
 console.log('Server running on port 2000');
