@@ -2,7 +2,7 @@ import express from "express";
 import  apicache  from "apicache";
 import { routerD } from "./routes/docenteRoutes.js";
 import { routerE } from "./routes/estudianteRoutes.js";
-import { PORT } from "./database/config.js";
+import { PORT } from "./config/config.js";
 
 
 const app = express();
