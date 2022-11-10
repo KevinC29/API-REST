@@ -4,10 +4,9 @@ import { obtenerMDocentes, obtenerMDocente, crearMDocente, modificarMDocente, el
 import { v4 as uuidv4 } from 'uuid';
 
 
-
-export const obtenerSDocentes = () => {
+export const obtenerSDocentes = (filtro) => {
   try {
-    const todoslosDocentes = obtenerMDocentes();
+    const todoslosDocentes = obtenerMDocentes(filtro);
     return todoslosDocentes;
   } catch (error) {
     throw error;

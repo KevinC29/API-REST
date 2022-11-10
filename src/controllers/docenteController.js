@@ -8,18 +8,15 @@ import { pool } from "../database/db.js";
 import { Docente } from "../Entidades/Docente.js"
 
 
-
-
-
 export const obtenerCDocentes = async (req, res) => {
     //const { id_docente } = req.query;
 
-
+    const { apellidos } = req.query;
 
     //const [rows] = pool.query("SELECT * FROM docente");
     try {
         //console.log("ESTOY EN OBTENER DOCENTES")
-        const todosDocentes = await obtenerSDocentes();
+        const todosDocentes = await obtenerSDocentes( { apellidos } );
         //console.log("todos los docente", todosDocentes);
         res.status(200).json({ message: 'ok', data: todosDocentes });
         //console.log(rows[0]);

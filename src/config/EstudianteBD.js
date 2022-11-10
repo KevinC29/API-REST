@@ -1,4 +1,4 @@
-import { pool } from "../database/db.js";
+import { pool } from "./db.js.js";
 
 async function validar(id_estudiante) {
   const [rows] = await pool.query("SELECT * FROM estudiante WHERE id_estudiante = ?", [id_estudiante]);

@@ -16,17 +16,27 @@ async function validar(id_docente) {
   return validar;
 }
 
-
-export const obtenerMDocentes = async () => {
+export const obtenerMDocentes = async (filtro) => {
   try {
 
     //console.log("ESTOY EN BD OBTENER DOCENTES");
-    const [rows] = await pool.query("SELECT * FROM docente");
+    //console.log(filtro);
+    const [ rows ] = await pool.query("SELECT * FROM docente");
     //console.log(rows);
+    //console.log("ESTOY EN BD OBTENER DOCENTES");
+    //console.log(rows.length);
 
+    
 
     if (rows.lenght <= 0) {
       return console.log("No existen Docentes Registrados");
+    };
+
+    if(filtro.apellidos != undefined){
+      const filtro1 = filtro.apellidos.toLowerCase();
+      const filtro2 = filtro.apellidos.toUpperCase();
+      let [ rows2 ] = await pool.query(`SELECT * FROM docente WHERE apellidos REGEXP '^${filtro1}|${filtro2}'`); 
+      return rows2;
     };
 
     // if (todosDocentes.lenght == 0) {

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import{obtenerCDocentes, obtenerCDocente, crearCDocente, modificarCDocente, eliminarCDocente } from "../controllers/docenteController.js";
+import{ obtenerCDocentes, obtenerCDocente, crearCDocente, modificarCDocente, eliminarCDocente } from "../controllers/docenteController.js";
 //const estudianteController = require("../controllers/estudianteController");
 export const routerD = Router();
 
