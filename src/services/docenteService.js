@@ -1,6 +1,6 @@
 //import {pool} from '../db/db.js'
 //const docente = require("../database/Docente");
-import { obtenerMDocentes, obtenerMDocente, crearMDocente, modificarMDocente, eliminarMDocente } from '../database/DocenteBD.js';
+import { obtenerMDocentes, obtenerMDocente, crearMDocente, modificarMDocente, eliminarMDocente } from '../config/DocenteBD.js';
 import { v4 as uuidv4 } from 'uuid';
 
 

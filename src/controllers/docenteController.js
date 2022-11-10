@@ -3,9 +3,9 @@
 import { obtenerSDocentes, obtenerSDocente, crearSDocente, modificarSDocente, eliminarSDocente } from '../services/docenteService.js';
 import { v4 as uuidv4 } from 'uuid';
 //const docenteService = require("../services/docenteService");
-import { pool } from "../database/db.js";
-//const { pool } = require("../database/db");
-import { Docente } from "../Entidades/Docente.js"
+// import { pool } from "../config/db.js";
+// //const { pool } = require("../database/db");
+// import { Docente } from "../Entidades/Docente.js"
 
 
 export const obtenerCDocentes = async (req, res) => {

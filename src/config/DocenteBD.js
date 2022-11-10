@@ -1,7 +1,7 @@
 // const DB = require("./db.json");
 // const { saveToDatabase } = require("./utils");
 //const pool = require("./db");
-import { pool } from "../database/db.js";
+import { pool } from "../config/db.js";
 
 async function validar(id_docente) {
   const [rows] = await pool.query("SELECT * FROM docente WHERE id_docente = ?", [id_docente]);

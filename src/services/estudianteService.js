@@ -1,4 +1,4 @@
-import { obtenerMEstudiantes, obtenerMEstudiante, crearMEstudiante, modificarMEstudiante, eliminarMEstudiante } from '../database/EstudianteBD.js';
+import { obtenerMEstudiantes, obtenerMEstudiante, crearMEstudiante, modificarMEstudiante, eliminarMEstudiante } from '../config/EstudianteBD.js';
 
 export const obtenerSEstudiantes = () => {
   try {
