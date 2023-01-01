@@ -1,5 +1,4 @@
 // const { createPool } = require('mysql2/promise');
-// //const createPool = require("mysql2/promise");
 import {createPool} from 'mysql2/promise'
 
 
@@ -25,4 +24,6 @@ export const pool = createPool({
   password: DB_PASSWORD,
   port: DB_PORT,
   database: DB_DATABASE,
+  connectionLimit : 10,
+  queueLimit: 0
 });
