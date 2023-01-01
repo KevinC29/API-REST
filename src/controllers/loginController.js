@@ -20,6 +20,7 @@ export const obtenerCLogin = async (req, res) => {
         return;
     }
     const id1 = id_estudiante.slice(1, 37);
+    console.log(id1);
     try {
         // if (rows.length <= 0) {
         //     res.status(400).send({

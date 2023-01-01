@@ -8,7 +8,7 @@ export const obtenerMLogin = async (id_estudiante) => {
     if (rows.length == 0) {
       throw {
         status: 400,
-        message: `Can't find workout with the id '${id_estudiante}'`,
+        message: `Can't jsnkadskd '${id_estudiante}'`,
       };
     }
 
